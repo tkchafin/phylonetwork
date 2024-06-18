@@ -1,5 +1,5 @@
 //
-// Subworkflow with functionality specific to the nf-core/poecile pipeline
+// Subworkflow with functionality specific to the nf-core/phylonetwork pipeline
 //
 
 /*

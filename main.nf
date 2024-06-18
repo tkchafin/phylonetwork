@@ -1,11 +1,11 @@
 #!/usr/bin/env nextflow
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    nf-core/poecile
+    nf-core/phylonetwork
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    Github : https://github.com/nf-core/poecile
-    Website: https://nf-co.re/poecile
-    Slack  : https://nfcore.slack.com/channels/poecile
+    Github : https://github.com/nf-core/phylonetwork
+    Website: https://nf-co.re/phylonetwork
+    Slack  : https://nfcore.slack.com/channels/phylonetwork
 ----------------------------------------------------------------------------------------
 */
 
@@ -17,11 +17,11 @@ nextflow.enable.dsl = 2
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 */
 
-include { POECILE  } from './workflows/poecile'
-include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_poecile_pipeline'
-include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_poecile_pipeline'
+include { PHYLONETWORK  } from './workflows/phylonetwork'
+include { PIPELINE_INITIALISATION } from './subworkflows/local/utils_nfcore_phylonetwork_pipeline'
+include { PIPELINE_COMPLETION     } from './subworkflows/local/utils_nfcore_phylonetwork_pipeline'
 
-include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_poecile_pipeline'
+include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_phylonetwork_pipeline'
 
 /*
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -43,7 +43,7 @@ include { getGenomeAttribute      } from './subworkflows/local/utils_nfcore_poec
 //
 // WORKFLOW: Run main analysis pipeline depending on type of input
 //
-workflow NFCORE_POECILE {
+workflow NFCORE_PHYLONETWORK {
 
     take:
     samplesheet // channel: samplesheet read in from --input
@@ -53,12 +53,12 @@ workflow NFCORE_POECILE {
     //
     // WORKFLOW: Run pipeline
     //
-    POECILE (
+    PHYLONETWORK (
         samplesheet
     )
 
     emit:
-    multiqc_report = POECILE.out.multiqc_report // channel: /path/to/multiqc_report.html
+    multiqc_report = PHYLONETWORK.out.multiqc_report // channel: /path/to/multiqc_report.html
 
 }
 /*
@@ -87,7 +87,7 @@ workflow {
     //
     // WORKFLOW: Run main workflow
     //
-    NFCORE_POECILE (
+    NFCORE_PHYLONETWORK (
         PIPELINE_INITIALISATION.out.samplesheet
     )
 
@@ -101,7 +101,7 @@ workflow {
         params.outdir,
         params.monochrome_logs,
         params.hook_url,
-        NFCORE_POECILE.out.multiqc_report
+        NFCORE_PHYLONETWORK.out.multiqc_report
     )
 }
 

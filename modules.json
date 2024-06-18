@@ -1,6 +1,6 @@
 {
-    "name": "nf-core/poecile",
-    "homePage": "https://github.com/nf-core/poecile",
+    "name": "nf-core/phylonetwork",
+    "homePage": "https://github.com/nf-core/phylonetwork",
     "repos": {
         "https://github.com/nf-core/modules.git": {
             "modules": {
