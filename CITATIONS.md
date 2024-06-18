@@ -1,4 +1,4 @@
-# nf-core/poecile: Citations
+# nf-core/phylonetwork: Citations
 
 ## [nf-core](https://pubmed.ncbi.nlm.nih.gov/32055031/)
 
