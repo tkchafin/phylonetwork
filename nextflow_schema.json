@@ -10,18 +10,24 @@
             "type": "object",
             "fa_icon": "fas fa-terminal",
             "description": "Define where the pipeline should find input data and save output data.",
-            "required": ["input", "outdir"],
+            "required": ["input", "outdir", "pop_map"],
             "properties": {
                 "input": {
                     "type": "string",
                     "format": "file-path",
                     "exists": true,
-                    "schema": "assets/schema_input.json",
-                    "mimetype": "text/csv",
-                    "pattern": "^\\S+\\.csv$",
-                    "description": "Path to comma-separated file containing information about the samples in the experiment.",
-                    "help_text": "You will need to create a design file with information about the samples in your experiment before running the pipeline. Use this parameter to specify its location. It has to be a comma-separated file with 3 columns, and a header row. See [usage docs](https://nf-co.re/phylonetwork/usage#samplesheet-input).",
-                    "fa_icon": "fas fa-file-csv"
+                    "pattern": "^\\S+\\.vcf(\\.gz)?$",
+                    "description": "Path to the input VCF or VCF.GZ file.",
+                    "help_text": "Provide the path to the VCF or VCF.GZ file containing the genetic data.",
+                    "fa_icon": "fas fa-file-alt"
+                },
+                "pop_map": {
+                    "type": "string",
+                    "format": "file-path",
+                    "exists": true,
+                    "description": "Path to the tab-delimited population mapping file.",
+                    "help_text": "Provide the path to the population mapping file with the format SAMPLE\\tPOP.",
+                    "fa_icon": "fas fa-file-alt"
                 },
                 "outdir": {
                     "type": "string",

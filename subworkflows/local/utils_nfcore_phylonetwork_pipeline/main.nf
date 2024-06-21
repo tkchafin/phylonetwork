@@ -35,7 +35,8 @@ workflow PIPELINE_INITIALISATION {
     monochrome_logs   // boolean: Do not use coloured log outputs
     nextflow_cli_args //   array: List of positional nextflow CLI args
     outdir            //  string: The output directory where the results will be saved
-    input             //  string: Path to input samplesheet
+    input             //  string: Path to input VCF file
+    pop_map           //  string: Path to population assignment file
 
     main:
 
@@ -56,7 +57,7 @@ workflow PIPELINE_INITIALISATION {
     //
     pre_help_text = nfCoreLogo(monochrome_logs)
     post_help_text = '\n' + workflowCitation() + '\n' + dashedLine(monochrome_logs)
-    def String workflow_command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input samplesheet.csv --outdir <OUTDIR>"
+    def String workflow_command = "nextflow run ${workflow.manifest.name} -profile <docker/singularity/.../institute> --input <VCF> --pop_map <POP_MAP> --outdir <OUTDIR>"
     UTILS_NFVALIDATION_PLUGIN (
         help,
         workflow_command,
@@ -78,32 +79,22 @@ workflow PIPELINE_INITIALISATION {
     validateInputParameters()
 
     //
-    // Create channel from input file provided through params.input
+    // Create channels from input files provided through params.input and params.pop_map
     //
     Channel
-        .fromSamplesheet("input")
-        .map {
-            meta, fastq_1, fastq_2 ->
-                if (!fastq_2) {
-                    return [ meta.id, meta + [ single_end:true ], [ fastq_1 ] ]
-                } else {
-                    return [ meta.id, meta + [ single_end:false ], [ fastq_1, fastq_2 ] ]
-                }
-        }
-        .groupTuple()
-        .map {
-            validateInputSamplesheet(it)
-        }
-        .map {
-            meta, fastqs ->
-                return [ meta, fastqs.flatten() ]
-        }
-        .set { ch_samplesheet }
+        .fromPath(params.input)
+        .set { ch_vcf }
+
+    Channel
+        .fromPath(params.pop_map)
+        .set { ch_pop_map }
 
     emit:
-    samplesheet = ch_samplesheet
-    versions    = ch_versions
+    vcf        = ch_vcf
+    pop_map    = ch_pop_map
+    versions   = ch_versions
 }
+
 
 /*
 ========================================================================================
@@ -155,7 +146,7 @@ workflow PIPELINE_COMPLETION {
 // Check and validate pipeline parameters
 //
 def validateInputParameters() {
-    genomeExistsError()
+
 }
 
 //
